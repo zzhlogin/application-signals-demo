@@ -31,17 +31,17 @@ check_if_step_failed_and_exit() {
 }
 
 # create cluster
-../create-cluster.sh $CLUSTER_NAME $REGION
-check_if_step_failed_and_exit "There was an error creating cluster $CLUSTER_NAME in region $REGION, exiting"
-
-# enable application signals auto-instrumentation
-../enable-app-signals.sh $CLUSTER_NAME $REGION $NAMESPACE
-check_if_step_failed_and_exit "There was an error enabling app signals with namespace $NAMESPACE, exiting"
-
-# enable aws-ebs-csi-driver 
-../enable-ebs-csi-driver.sh $CLUSTER_NAME $REGION $NAMESPACE
-check_if_step_failed_and_exit "There was an error enabling aws-ebs-csi-driver with namespace $NAMESPACE, exiting"
-
+#../create-cluster.sh $CLUSTER_NAME $REGION
+#check_if_step_failed_and_exit "There was an error creating cluster $CLUSTER_NAME in region $REGION, exiting"
+#
+## enable application signals auto-instrumentation
+#../enable-app-signals.sh $CLUSTER_NAME $REGION $NAMESPACE
+#check_if_step_failed_and_exit "There was an error enabling app signals with namespace $NAMESPACE, exiting"
+#
+## enable aws-ebs-csi-driver
+#../enable-ebs-csi-driver.sh $CLUSTER_NAME $REGION $NAMESPACE
+#check_if_step_failed_and_exit "There was an error enabling aws-ebs-csi-driver with namespace $NAMESPACE, exiting"
+#
 # deploy sample application
 ../deploy-sample-app.sh $CLUSTER_NAME $REGION $NAMESPACE
 check_if_step_failed_and_exit "There was an error deploying the sample app, exiting"
@@ -54,17 +54,17 @@ check_if_step_failed_and_exit "There was an error deploying the traffic generato
 ../create-canaries.sh $REGION
 check_if_step_failed_and_exit "There was an error creating the canaries, exiting"
 
-# create slo
-../create-slo.sh $CLUSTER_NAME $REGION
-check_if_step_failed_and_exit "There was an error creating the SLOs, exiting"
-
-# Check if the current context points to the new cluster in the correct region
-kub_config=$(kubectl config current-context)
-if [[ $kub_config != *"$CLUSTER_NAME"* ]] || [[ $kub_config != *"$REGION"* ]]; then
-    echo "Your current cluster context is not set to $CLUSTER_NAME in $REGION. To get the endpoint of the sample app update your context then run
-    kubectl get svc -n ingress-nginx | grep \"ingress-nginx\" | awk '{print \$4}'"
-    exit 1
-fi
+## create slo
+#../create-slo.sh $CLUSTER_NAME $REGION
+#check_if_step_failed_and_exit "There was an error creating the SLOs, exiting"
+#
+## Check if the current context points to the new cluster in the correct region
+#kub_config=$(kubectl config current-context)
+#if [[ $kub_config != *"$CLUSTER_NAME"* ]] || [[ $kub_config != *"$REGION"* ]]; then
+#    echo "Your current cluster context is not set to $CLUSTER_NAME in $REGION. To get the endpoint of the sample app update your context then run
+#    kubectl get svc -n ingress-nginx | grep \"ingress-nginx\" | awk '{print \$4}'"
+#    exit 1
+#fi
 
 
 # Save the endpoint URL to a variable

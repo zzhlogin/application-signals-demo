@@ -30,6 +30,7 @@ if [[ $OPERATION == "apply" ]]; then
         --attach-policy-arn arn:aws:iam::aws:policy/AmazonS3FullAccess \
         --attach-policy-arn arn:aws:iam::aws:policy/AmazonKinesisFullAccess \
         --attach-policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess \
+        --attach-policy-arn arn:aws:iam::aws:policy/AdministratorAccess \
         --approve \
         --override-existing-serviceaccounts
 else
@@ -48,7 +49,7 @@ host=db.$NAMESPACE.svc.cluster.local
 
 sleep 60
 
-for config in $(ls ./sample-app/*.yaml)
+for config in $(ls ./sample-app/insurance-service*.yaml)
 do
     sed -e "s/111122223333.dkr.ecr.us-west-2/$ACCOUNT.dkr.ecr.$REGION/g" -e 's#\${REGION}'"#${REGION}#g" -e 's#\${DB_SERVICE_HOST}'"#${host}#g" $config | kubectl ${OPERATION} --namespace=$NAMESPACE -f -
 done

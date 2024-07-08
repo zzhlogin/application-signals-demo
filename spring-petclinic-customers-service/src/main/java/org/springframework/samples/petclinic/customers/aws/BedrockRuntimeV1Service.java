@@ -1,0 +1,81 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+package org.springframework.samples.petclinic.customers.aws;
+
+import org.springframework.samples.petclinic.customers.Util;
+import org.springframework.stereotype.Component;
+
+import com.amazonaws.auth.WebIdentityTokenCredentialsProvider;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.bedrockruntime.AmazonBedrockRuntime;
+import com.amazonaws.services.bedrockruntime.AmazonBedrockRuntimeClientBuilder;
+import com.amazonaws.services.bedrockruntime.model.InvokeModelRequest;
+import com.amazonaws.services.bedrockruntime.model.InvokeModelResult;
+
+import org.json.JSONObject;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
+import org.json.JSONArray;
+
+@Component
+public class BedrockRuntimeV1Service {
+    final AmazonBedrockRuntime bedrockRuntimeV1Client;
+
+    public BedrockRuntimeV1Service() {
+        // AWS web identity is set for EKS clusters, if these are not set then use default credentials
+        if (System.getenv("AWS_WEB_IDENTITY_TOKEN_FILE") == null && System.getProperty("aws.webIdentityTokenFile") == null) {
+            bedrockRuntimeV1Client = AmazonBedrockRuntimeClientBuilder.standard()
+                    .withRegion(Regions.US_EAST_1) // replace with your desired region
+                    .build();
+        }
+        else {
+            BasicAWSCredentials awsCreds = new BasicAWSCredentials("access_key_id", "secret_key_id");
+            bedrockRuntimeV1Client = AmazonBedrockRuntimeClientBuilder.standard()
+                    .withRegion(Regions.US_EAST_1) // replace with your desired region
+                    .withCredentials(WebIdentityTokenCredentialsProvider.create())
+                    .build();
+        }
+
+    }
+
+    public String invokeTitanModel() {
+        try {
+            System.out.printf("invokeTitanModel: ");
+            String modelId = "amazon.titan-text-premier-v1:0";
+            String inputText = "Hi Amazon bedrock, how are you?";
+            float temperature = 0.8f;
+            float topP = 0.9f;
+            int maxTokenCount = 100;
+
+            JSONObject textGenerationConfig = new JSONObject();
+            textGenerationConfig.put("temperature", temperature);
+            textGenerationConfig.put("topP", topP);
+            textGenerationConfig.put("maxTokenCount", maxTokenCount);
+
+            JSONObject nativeRequestObject = new JSONObject();
+            nativeRequestObject.put("inputText", inputText);
+            nativeRequestObject.put("textGenerationConfig", textGenerationConfig);
+
+            String nativeRequest = nativeRequestObject.toString();
+            ByteBuffer buffer = StandardCharsets.UTF_8.encode(nativeRequest);
+
+            InvokeModelRequest invokeModelRequest = new InvokeModelRequest()
+                    .withModelId(modelId)
+                    .withBody(buffer);
+            InvokeModelResult result = bedrockRuntimeV1Client.invokeModel(invokeModelRequest);
+
+            ByteBuffer resultBodyBuffer = result.getBody().asReadOnlyBuffer();
+            byte[] bytes = new byte[resultBodyBuffer.remaining()];
+            resultBodyBuffer.get(bytes);
+            String result_body = new String(bytes, StandardCharsets.UTF_8);
+
+            System.out.printf("Invoke titan Model Result:: " + result_body);
+            return "Invoke titan Model Result: " + result_body;
+        } catch (Exception e) {
+            System.out.printf("Invoke titan Model Result: Error: %s%n", e.getMessage());
+            throw e;
+        }
+    }
+}
