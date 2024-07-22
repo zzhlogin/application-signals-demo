@@ -48,6 +48,7 @@ public class BedrockRuntimeV1Service {
             float temperature = 0.8f;
             float topP = 0.9f;
             int maxTokenCount = 100;
+            System.out.printf("Invoke titan Model with modelId: " + modelId + " inputText: " + inputText + " temperature: " + temperature + " topP: " + topP + " maxTokenCount: " + maxTokenCount);
 
             JSONObject textGenerationConfig = new JSONObject();
             textGenerationConfig.put("temperature", temperature);
@@ -71,7 +72,14 @@ public class BedrockRuntimeV1Service {
             resultBodyBuffer.get(bytes);
             String result_body = new String(bytes, StandardCharsets.UTF_8);
 
-            System.out.printf("Invoke titan Model Result:: " + result_body);
+            System.out.printf("Invoke titan Model Result: " + result_body);
+            JSONObject jsonObject = new JSONObject(result_body);
+            int inputTextTokenCount = jsonObject.getInt("inputTextTokenCount");
+            JSONArray resultsArray = jsonObject.getJSONArray("results");
+            JSONObject firstResult = resultsArray.getJSONObject(0);
+            int outputTokenCount = firstResult.getInt("tokenCount");
+            String completionReason = firstResult.getString("completionReason");
+            System.out.printf("Invoke titan Model Result: inputTextTokenCount: " + inputTextTokenCount + " outputTokenCount: " + outputTokenCount + " completionReason: " + completionReason);
             return "Invoke titan Model Result: " + result_body;
         } catch (Exception e) {
             System.out.printf("Invoke titan Model Result: Error: %s%n", e.getMessage());

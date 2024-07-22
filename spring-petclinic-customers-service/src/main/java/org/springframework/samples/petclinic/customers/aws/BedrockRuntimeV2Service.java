@@ -46,6 +46,7 @@ public class BedrockRuntimeV2Service {
                     .put("temperature", 0.5)
                     .put("top_p", 0.9)
                     .toString();
+            System.out.printf("Invoke llama2 Model with modelId: " + llama2ModelId + " prompt: " + prompt + "max_gen_len: 1000 temperature: 0.5 top_p: 0.9");
 
             InvokeModelRequest request = InvokeModelRequest.builder()
                     .body(SdkBytes.fromUtf8String(payload))
@@ -58,9 +59,12 @@ public class BedrockRuntimeV2Service {
             InvokeModelResponse response = bedrockRuntimeV2Client.invokeModel(request);
 
             JSONObject responseBody = new JSONObject(response.body().asUtf8String());
-            System.out.println("invokeLlama2 response:" + response.body().asUtf8String());
+//            System.out.println("invokeLlama2 response:" + response.body().asUtf8String());
             String generatedText = responseBody.getString("generation");
-            System.out.println("prompt_token:" + responseBody.getInt("prompt_token_count"));
+            int promptTokenCount = responseBody.getInt("prompt_token_count");
+            int generationTokenCount = responseBody.getInt("generation_token_count");
+            String stopReason = responseBody.getString("stop_reason");
+            System.out.printf("Invoke llama2 Model response: prompt_token_count: " + promptTokenCount + " generation_token_count: " + generationTokenCount + " stop_reason: " + stopReason);
             return generatedText;
         } catch (Exception e) {
             System.out.printf("Failed to invokeLlama2: Error: %s%n",e.getMessage());

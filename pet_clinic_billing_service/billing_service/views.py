@@ -13,14 +13,6 @@ logger = logging.getLogger(__name__)
 
 class BillingViewSet(viewsets.ViewSet):
     def list(self, request):
-        # sns_client
-        # print("Creating SNS Topic:!!!!!!")
-        # sns_client = boto3.client('sns', region_name=os.environ.get('REGION', 'us-east-1'))
-        # topic_arn = "arn:aws:sns:us-east-1:007003802740:test_topic"
-        # print("Getting Topic Attributes:!!!!!!")
-        # topic_attributes = sns_client.get_topic_attributes(TopicArn=topic_arn)
-        # print("Topic Attributes:", topic_attributes)
-
         # bedrock_client
         print("Getting Guardrail Information:!!!!!!")
         bedrock_client = boto3.client('bedrock', region_name=os.environ.get('REGION', 'us-east-1'))
@@ -29,6 +21,20 @@ class BillingViewSet(viewsets.ViewSet):
             guardrailIdentifier=guardrail_arn
         )
         print("Guardrail information retrieved successfully.")
+
+        bedrock_agent_client = boto3.client('bedrock-agent', region_name=os.environ.get('REGION', 'us-east-1'))
+        print("Getting Agent Information:!!!!!!")
+        agent_id = "Q08WFRPHVL"
+        bedrock_agent_client.get_agent(agentId=agent_id)
+        print("Agent information retrieved successfully.")
+        knowledgeBaseId = "DXOTRRFCF8"
+        print("Getting Knowledge Base Information:!!!!!!")
+        bedrock_agent_client.get_knowledge_base(knowledgeBaseId=knowledgeBaseId)
+        print("Knowledge Base information retrieved successfully.")
+        dataSourceId = "E7FIS6IZ4A"
+        print("Getting Data Source Information:!!!!!!")
+        bedrock_agent_client.get_data_source(knowledgeBaseId=knowledgeBaseId, dataSourceId=dataSourceId)
+        print("Data Source information retrieved successfully.")
 
         # bedrock_runtime_client
         bedrock_runtime_client = boto3.client(service_name='bedrock-runtime', region_name=os.environ.get('REGION', 'us-east-1'))

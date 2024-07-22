@@ -104,10 +104,6 @@ class PetResource {
         int petId = petRequest.getId();
         Pet pet = findPetById(petId);
         kinesisService.getStreamRecords();
-//        log.info("secretsManagerV2Service Getting secret value for secret");
-//        String response = secretsManagerV2Service.getSecretValue();
-//        log.info("secretsManagerV2Service FINISH Getting secret value for secret");
-
 
         log.info("bedrockAgentV1Service Getting knowledge base");
         bedrockAgentV1Service.getKnowledgeBase();
@@ -141,14 +137,6 @@ class PetResource {
         log.info("bedrockRuntimeV2Service Invoking Llama2V2");
         bedrockRuntimeV2Service.invokeLlama2V2();
         log.info("bedrockRuntimeV2Service FINISH Invoking Llama2V2");
-
-
-//        log.info("stepFunctionV1Service Describe state machine");
-//        stepFunctionV1Service.describeStateMachine();
-//        log.info("stepFunctionV1Service FINISH Describe state machine");
-//        log.info("stepFunctionV1Service Get activity task");
-//        stepFunctionV1Service.getActivityTask();
-//        log.info("stepFunctionV1Service FINISH Get activity task");
 
         save(pet, petRequest);
     }

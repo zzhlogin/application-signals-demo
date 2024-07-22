@@ -49,7 +49,7 @@ host=db.$NAMESPACE.svc.cluster.local
 
 sleep 60
 
-for config in $(ls ./sample-app/insurance-service*.yaml)
+for config in $(ls ./sample-app/*.yaml)
 do
     sed -e "s/111122223333.dkr.ecr.us-west-2/$ACCOUNT.dkr.ecr.$REGION/g" -e 's#\${REGION}'"#${REGION}#g" -e 's#\${DB_SERVICE_HOST}'"#${host}#g" $config | kubectl ${OPERATION} --namespace=$NAMESPACE -f -
 done
