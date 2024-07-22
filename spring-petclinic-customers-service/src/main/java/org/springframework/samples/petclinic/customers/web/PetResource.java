@@ -89,7 +89,7 @@ class PetResource {
         
         final Pet pet = new Pet();
         try {
-//            sqsService.sendMsg();
+            sqsService.sendMsg();
             owner.addPet(pet);
         } catch (Exception e) {
             log.error("Failed to add pet: '{}' for owner: '{}'", petRequest.getName(), owner);
@@ -98,46 +98,49 @@ class PetResource {
         return save(pet, petRequest);
     }
 
+    @PutMapping("/diagnose/owners/*/pets/{petId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void processDiagnose() {
+//        log.info("bedrockAgentV1Service Getting knowledge base");
+//        bedrockAgentV1Service.getKnowledgeBase();
+//        log.info("bedrockAgentV1Service FINISH Getting knowledge base");
+//        log.info("bedrockAgentV1Service Getting datasource");
+//        bedrockAgentV1Service.getDatasource();
+//        log.info("bedrockAgentV1Service FINISH Getting datasource");
+//        log.info("bedrockAgentV1Service Getting agent");
+//        bedrockAgentV1Service.getAgent();
+//        log.info("bedrockAgentV1Service FINISH Getting agent");
+//        log.info("bedrockV1Service Getting guardrail");
+//        bedrockV1Service.getGuardrail();
+//        log.info("bedrockV1Service FINISH Getting guardrail");
+        log.info("bedrockRuntimeV1Service Invoking Titan model");
+        bedrockRuntimeV1Service.invokeTitanModel();
+        log.info("bedrockRuntimeV1Service FINISH Invoking Titan model");
+
+
+//        log.info("bedrockAgentV2Service Getting agent");
+//        bedrockAgentV2Service.bedrockAgentGetAgentV2();
+//        log.info("bedrockAgentV2Service FINISH Getting agent");
+//        log.info("bedrockAgentV2Service Getting datasource");
+//        bedrockAgentV2Service.bedrockAgentGetDatasourceV2();
+//        log.info("bedrockAgentV2Service FINISH Getting datasource");
+        log.info("bedrockAgentV2Service Getting knowledge base");
+        bedrockAgentV2Service.bedrockAgentGetKnowledgeBaseV2();
+        log.info("bedrockAgentV2Service FINISH Getting knowledge base");
+//        log.info("bedrockV2Service Getting guardrail");
+//        bedrockV2Service.getGuardrail();
+//        log.info("bedrockV2Service FINISH Getting guardrail");
+        log.info("bedrockRuntimeV2Service Invoking Llama2V2");
+        bedrockRuntimeV2Service.invokeLlama2V2();
+        log.info("bedrockRuntimeV2Service FINISH Invoking Llama2V2");
+    }
+
     @PutMapping("/owners/*/pets/{petId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void processUpdateForm(@RequestBody PetRequest petRequest) {
         int petId = petRequest.getId();
         Pet pet = findPetById(petId);
         kinesisService.getStreamRecords();
-
-        log.info("bedrockAgentV1Service Getting knowledge base");
-        bedrockAgentV1Service.getKnowledgeBase();
-        log.info("bedrockAgentV1Service FINISH Getting knowledge base");
-        log.info("bedrockAgentV1Service Getting datasource");
-        bedrockAgentV1Service.getDatasource();
-        log.info("bedrockAgentV1Service FINISH Getting datasource");
-        log.info("bedrockAgentV1Service Getting agent");
-        bedrockAgentV1Service.getAgent();
-        log.info("bedrockAgentV1Service FINISH Getting agent");
-        log.info("bedrockV1Service Getting guardrail");
-        bedrockV1Service.getGuardrail();
-        log.info("bedrockV1Service FINISH Getting guardrail");
-        log.info("bedrockRuntimeV1Service Invoking Titan model");
-        bedrockRuntimeV1Service.invokeTitanModel();
-        log.info("bedrockRuntimeV1Service FINISH Invoking Titan model");
-
-
-        log.info("bedrockAgentV2Service Getting agent");
-        bedrockAgentV2Service.bedrockAgentGetAgentV2();
-        log.info("bedrockAgentV2Service FINISH Getting agent");
-        log.info("bedrockAgentV2Service Getting datasource");
-        bedrockAgentV2Service.bedrockAgentGetDatasourceV2();
-        log.info("bedrockAgentV2Service FINISH Getting datasource");
-        log.info("bedrockAgentV2Service Getting knowledge base");
-        bedrockAgentV2Service.bedrockAgentGetKnowledgeBaseV2();
-        log.info("bedrockAgentV2Service FINISH Getting knowledge base");
-        log.info("bedrockV2Service Getting guardrail");
-        bedrockV2Service.getGuardrail();
-        log.info("bedrockV2Service FINISH Getting guardrail");
-        log.info("bedrockRuntimeV2Service Invoking Llama2V2");
-        bedrockRuntimeV2Service.invokeLlama2V2();
-        log.info("bedrockRuntimeV2Service FINISH Invoking Llama2V2");
-
         save(pet, petRequest);
     }
 

@@ -49,7 +49,7 @@ LIST_SERVICES_REQUEST_WITH_CORRECT_INPUT=$(sed -e "s|\"StartTime\": .*|\"StartTi
 
 
 SERVICE_KEY_ATTRIBUTES=$(aws application-signals list-services \
-  --endpoint $ENDPOINT --region "us-east-1" \
+  --endpoint $ENDPOINT --region "us-west-2" \
   --cli-input-json "$LIST_SERVICES_REQUEST_WITH_CORRECT_INPUT" \
   --output json --query "(ServiceSummaries[?KeyAttributes.Name=='$SERVICE_NAME'].KeyAttributes)[0]")
 

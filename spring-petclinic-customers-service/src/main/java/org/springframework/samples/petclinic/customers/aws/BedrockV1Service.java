@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BedrockV1Service {
-    private static final String guardrailId = "bt4o77i015cu";
+    private static final String guardrailId = "fri0qcmxe5tr";
     final AmazonBedrock bedrockV1Client;
 
     public BedrockV1Service() {

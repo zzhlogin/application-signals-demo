@@ -10,7 +10,7 @@ import software.amazon.awssdk.services.bedrock.model.GetGuardrailResponse;
 
 @Component
 public class BedrockV2Service {
-    private static final String guardrailId = "bt4o77i015cu";
+    private static final String guardrailId = "fri0qcmxe5tr";
     final BedrockClient bedrockV2Client;
 
     public BedrockV2Service() {

@@ -16,9 +16,9 @@ import software.amazon.awssdk.services.bedrockagent.model.GetKnowledgeBaseRespon
 
 @Component
 public class BedrockAgentV2Service {
-    private static final String agentId = "Q08WFRPHVL";
-    private static final String datasourceId = "E7FIS6IZ4A";
-    private static final String knowledgeBaseId = "DXOTRRFCF8";
+    private static final String agentId = "M8WPRK0AIA";
+    private static final String datasourceId = "SF2CAIKK32";
+    private static final String knowledgeBaseId = "FIFFBKOOWC";
     final BedrockAgentClient bedrockAgentV2Client;
 
     public BedrockAgentV2Service() {

@@ -18,9 +18,9 @@ import com.amazonaws.services.bedrockagent.model.GetAgentResult;
 @Component
 public class BedrockAgentV1Service {
 //    private static final String knowledgeBaseId = "VTOW8CTCLP";
-    private static final String knowledgeBaseId = "DXOTRRFCF8";
-    private static final String datasourceId = "E7FIS6IZ4A";
-    private static final String agentId = "Q08WFRPHVL";
+    private static final String knowledgeBaseId = "FIFFBKOOWC";
+    private static final String datasourceId = "SF2CAIKK32";
+    private static final String agentId = "M8WPRK0AIA";
     final AWSBedrockAgent bedrockAgentV1Client;
 
     public BedrockAgentV1Service() {

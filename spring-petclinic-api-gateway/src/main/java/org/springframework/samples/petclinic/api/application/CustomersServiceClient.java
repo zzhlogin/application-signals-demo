@@ -86,6 +86,14 @@ public class CustomersServiceClient {
     }
 
     @WithSpan
+    public Mono<PetFull> diagnosePet(final int ownerId, final int petId) {
+        return webClientBuilder.build().get()
+                .uri("http://customers-service/diagnose/owners/{ownerId}/pets/{petId}", ownerId, petId)
+                .retrieve()
+                .bodyToMono(PetFull.class);
+    }
+
+    @WithSpan
     public Mono<Void> updatePet(final int ownerId, final int petId, final PetRequest petRequest) {
         return webClientBuilder.build().put()
             .uri("http://customers-service/owners/{ownerId}/pets/{petId}", ownerId, petId)
