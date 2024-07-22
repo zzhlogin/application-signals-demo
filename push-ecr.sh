@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-export REPOSITORY_PREFIX=007003802740.dkr.ecr.us-east-1.amazonaws.com
+export REPOSITORY_PREFIX=${ACCOUNT}.dkr.ecr.${REGION}.amazonaws.com
 
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${REPOSITORY_PREFIX}
+aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${REPOSITORY_PREFIX}
 
 aws ecr create-repository --repository-name springcommunity/spring-petclinic-api-gateway --region ${REGION} --no-cli-pager || true
 docker tag springcommunity/spring-petclinic-api-gateway:latest ${REPOSITORY_PREFIX}/springcommunity/spring-petclinic-api-gateway:latest
