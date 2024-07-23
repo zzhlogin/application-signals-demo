@@ -27,13 +27,13 @@ public class BedrockRuntimeV1Service {
         // AWS web identity is set for EKS clusters, if these are not set then use default credentials
         if (System.getenv("AWS_WEB_IDENTITY_TOKEN_FILE") == null && System.getProperty("aws.webIdentityTokenFile") == null) {
             bedrockRuntimeV1Client = AmazonBedrockRuntimeClientBuilder.standard()
-                    .withRegion(Regions.US_EAST_1) // replace with your desired region
+                    .withRegion(Regions.US_WEST_2) // replace with your desired region
                     .build();
         }
         else {
             BasicAWSCredentials awsCreds = new BasicAWSCredentials("access_key_id", "secret_key_id");
             bedrockRuntimeV1Client = AmazonBedrockRuntimeClientBuilder.standard()
-                    .withRegion(Regions.US_EAST_1) // replace with your desired region
+                    .withRegion(Regions.US_WEST_2) // replace with your desired region
                     .withCredentials(WebIdentityTokenCredentialsProvider.create())
                     .build();
         }
@@ -43,8 +43,8 @@ public class BedrockRuntimeV1Service {
     public String invokeTitanModel() {
         try {
             System.out.printf("invokeTitanModel: ");
-            String modelId = "amazon.titan-text-premier-v1:0";
-            String inputText = "Hi Amazon bedrock, how are you?";
+            String modelId = "amazon.titan-text-express-v1";
+            String inputText = "What's the common desease for a pet?";
             float temperature = 0.8f;
             float topP = 0.9f;
             int maxTokenCount = 100;

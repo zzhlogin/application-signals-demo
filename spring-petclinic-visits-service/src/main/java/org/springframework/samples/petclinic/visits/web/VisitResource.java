@@ -94,6 +94,14 @@ class VisitResource {
         log.info("Reaching Get api: /owners/*/pets/{petId}/visits for petId: {}", petId);
         return new Visits(visitRepository.findByPetId(petId));
     }
+    
+//     @GetMapping("owners/*/pets/{petId}/diagnose")
+//     public Visits visits(@PathVariable("petId") @Min(1) int petId) throws Exception {
+// //        return visitRepository.findByPetId(petId);
+//         log.info("Reaching Get api: /owners/*/pets/{petId}/visits for petId: {}", petId);
+//         return new Visits(visitRepository.findByPetId(petId));
+//     }
+
 
     @ExceptionHandler(InvalidDateException.class)
     public ResponseEntity<String> handleInvalidDateException(InvalidDateException ex) {

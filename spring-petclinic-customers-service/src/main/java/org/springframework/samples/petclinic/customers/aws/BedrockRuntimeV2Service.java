@@ -36,38 +36,45 @@ public class BedrockRuntimeV2Service {
 
     public String invokeLlama2V2() {
         try {
-            System.out.printf("invokeLlama2V2: ");
-            String llama2ModelId = "meta.llama2-13b-chat-v1";
-            String prompt = "Hi Amazon bedrock, how are you??";
+            System.out.printf("Invoke Anthropic claude: ");
+            String claudeModelId = "anthropic.claude-3-sonnet-20240229-v1:0";
+            String prompt = "What's the common desease for a pet?";
+            JSONObject userMessage = new JSONObject()
+                    .put("role", "user")
+                    .put("content", "Pet diagnose content");
+            JSONArray messages = new JSONArray()
+                    .put(userMessage);
 
             String payload = new JSONObject()
-                    .put("prompt", prompt)
-                    .put("max_gen_len", 1000)
+                    .put("anthropic_version", "bedrock-2023-05-31")
+                    .put("messages", messages)
+                    .put("system", prompt)
+                    .put("max_tokens", 1000)
                     .put("temperature", 0.5)
                     .put("top_p", 0.9)
                     .toString();
-            System.out.printf("Invoke llama2 Model with modelId: " + llama2ModelId + " prompt: " + prompt + "max_gen_len: 1000 temperature: 0.5 top_p: 0.9");
+            System.out.printf("Anthropic claude Model with modelId: " + claudeModelId + " prompt: " + prompt + "max_gen_len: 1000 temperature: 0.5 top_p: 0.9");
 
             InvokeModelRequest request = InvokeModelRequest.builder()
                     .body(SdkBytes.fromUtf8String(payload))
-                    .modelId(llama2ModelId)
+                    .modelId(claudeModelId)
                     .contentType("application/json")
                     .accept("application/json")
                     .build();
-            System.out.println("invokeLlama2 request:" + request.body().asUtf8String());
+            System.out.println("Anthropic claude request:" + request.body().asUtf8String());
 
             InvokeModelResponse response = bedrockRuntimeV2Client.invokeModel(request);
 
             JSONObject responseBody = new JSONObject(response.body().asUtf8String());
-//            System.out.println("invokeLlama2 response:" + response.body().asUtf8String());
-            String generatedText = responseBody.getString("generation");
-            int promptTokenCount = responseBody.getInt("prompt_token_count");
-            int generationTokenCount = responseBody.getInt("generation_token_count");
-            String stopReason = responseBody.getString("stop_reason");
-            System.out.printf("Invoke llama2 Model response: prompt_token_count: " + promptTokenCount + " generation_token_count: " + generationTokenCount + " stop_reason: " + stopReason);
-            return generatedText;
+            System.out.println("invokeLlama2 response:" + response.body().asUtf8String());
+            // String generatedText = responseBody.getString("generation");
+            // int promptTokenCount = responseBody.getInt("prompt_token_count");
+            // int generationTokenCount = responseBody.getInt("generation_token_count");
+            // String stopReason = responseBody.getString("stop_reason");
+            // System.out.printf("Invoke claude Model response: prompt_token_count: " + promptTokenCount + " generation_token_count: " + generationTokenCount + " stop_reason: " + stopReason);
+            return "Done";
         } catch (Exception e) {
-            System.out.printf("Failed to invokeLlama2: Error: %s%n",e.getMessage());
+            System.out.printf("Failed to invoke Anthropic claude: Error: %s%n",e.getMessage());
             throw e;
         }
     }

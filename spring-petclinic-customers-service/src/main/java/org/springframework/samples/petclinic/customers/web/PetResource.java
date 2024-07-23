@@ -89,7 +89,7 @@ class PetResource {
         
         final Pet pet = new Pet();
         try {
-            sqsService.sendMsg();
+            // sqsService.sendMsg();
             owner.addPet(pet);
         } catch (Exception e) {
             log.error("Failed to add pet: '{}' for owner: '{}'", petRequest.getName(), owner);
@@ -98,9 +98,9 @@ class PetResource {
         return save(pet, petRequest);
     }
 
-    @PutMapping("/diagnose/owners/*/pets/{petId}")
+    @GetMapping("/diagnose/owners/*/pets/{petId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void processDiagnose() {
+    public void processDiagnose(@PathVariable("petId") int petId) {
 //        log.info("bedrockAgentV1Service Getting knowledge base");
 //        bedrockAgentV1Service.getKnowledgeBase();
 //        log.info("bedrockAgentV1Service FINISH Getting knowledge base");
@@ -113,7 +113,8 @@ class PetResource {
 //        log.info("bedrockV1Service Getting guardrail");
 //        bedrockV1Service.getGuardrail();
 //        log.info("bedrockV1Service FINISH Getting guardrail");
-        log.info("bedrockRuntimeV1Service Invoking Titan model");
+        log.info("DEBUG: CALLING BEDROCK petId = " + petId);
+        log.info("DEBUG: bedrockRuntimeV1Service Invoking Titan model");
         bedrockRuntimeV1Service.invokeTitanModel();
         log.info("bedrockRuntimeV1Service FINISH Invoking Titan model");
 
@@ -130,17 +131,20 @@ class PetResource {
 //        log.info("bedrockV2Service Getting guardrail");
 //        bedrockV2Service.getGuardrail();
 //        log.info("bedrockV2Service FINISH Getting guardrail");
-        log.info("bedrockRuntimeV2Service Invoking Llama2V2");
+        log.info("bedrockRuntimeV2Service Invoking Anthropic claude");
         bedrockRuntimeV2Service.invokeLlama2V2();
-        log.info("bedrockRuntimeV2Service FINISH Invoking Llama2V2");
+        log.info("bedrockRuntimeV2Service FINISH Invoking Anthropic claude");
     }
 
     @PutMapping("/owners/*/pets/{petId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void processUpdateForm(@RequestBody PetRequest petRequest) {
+        log.info("bedrockRuntimeV2Service Invoking Anthropic claude");
+        bedrockRuntimeV2Service.invokeLlama2V2();
+        log.info("bedrockRuntimeV2Service FINISH Invoking Anthropic claude");
         int petId = petRequest.getId();
         Pet pet = findPetById(petId);
-        kinesisService.getStreamRecords();
+        // kinesisService.getStreamRecords();
         save(pet, petRequest);
     }
 

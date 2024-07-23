@@ -13,54 +13,54 @@ logger = logging.getLogger(__name__)
 
 class BillingViewSet(viewsets.ViewSet):
     def list(self, request):
-        # bedrock_client
-        print("Getting Guardrail Information:!!!!!!")
-        bedrock_client = boto3.client('bedrock', region_name=os.environ.get('REGION', 'us-east-1'))
-        guardrail_arn = "arn:aws:bedrock:us-east-1:007003802740:guardrail/bt4o77i015cu"
-        bedrock_client.get_guardrail(
-            guardrailIdentifier=guardrail_arn
-        )
-        print("Guardrail information retrieved successfully.")
+        # # bedrock_client
+        # print("Getting Guardrail Information:!!!!!!")
+        # bedrock_client = boto3.client('bedrock', region_name=os.environ.get('REGION', 'us-east-1'))
+        # guardrail_arn = "arn:aws:bedrock:us-east-1:007003802740:guardrail/bt4o77i015cu"
+        # bedrock_client.get_guardrail(
+        #     guardrailIdentifier=guardrail_arn
+        # )
+        # print("Guardrail information retrieved successfully.")
+        # 
+        # bedrock_agent_client = boto3.client('bedrock-agent', region_name=os.environ.get('REGION', 'us-east-1'))
+        # print("Getting Agent Information:!!!!!!")
+        # agent_id = "Q08WFRPHVL"
+        # bedrock_agent_client.get_agent(agentId=agent_id)
+        # print("Agent information retrieved successfully.")
+        # knowledgeBaseId = "DXOTRRFCF8"
+        # print("Getting Knowledge Base Information:!!!!!!")
+        # bedrock_agent_client.get_knowledge_base(knowledgeBaseId=knowledgeBaseId)
+        # print("Knowledge Base information retrieved successfully.")
+        # dataSourceId = "E7FIS6IZ4A"
+        # print("Getting Data Source Information:!!!!!!")
+        # bedrock_agent_client.get_data_source(knowledgeBaseId=knowledgeBaseId, dataSourceId=dataSourceId)
+        # print("Data Source information retrieved successfully.")
+        # 
+        # # bedrock_runtime_client
+        # bedrock_runtime_client = boto3.client(service_name='bedrock-runtime', region_name=os.environ.get('REGION', 'us-east-1'))
+        # model_id = 'anthropic.claude-3-sonnet-20240229-v1:0'
+        # system_prompt = "Hi Amazon bedrock, how are you?"
+        # max_tokens = 1000
 
-        bedrock_agent_client = boto3.client('bedrock-agent', region_name=os.environ.get('REGION', 'us-east-1'))
-        print("Getting Agent Information:!!!!!!")
-        agent_id = "Q08WFRPHVL"
-        bedrock_agent_client.get_agent(agentId=agent_id)
-        print("Agent information retrieved successfully.")
-        knowledgeBaseId = "DXOTRRFCF8"
-        print("Getting Knowledge Base Information:!!!!!!")
-        bedrock_agent_client.get_knowledge_base(knowledgeBaseId=knowledgeBaseId)
-        print("Knowledge Base information retrieved successfully.")
-        dataSourceId = "E7FIS6IZ4A"
-        print("Getting Data Source Information:!!!!!!")
-        bedrock_agent_client.get_data_source(knowledgeBaseId=knowledgeBaseId, dataSourceId=dataSourceId)
-        print("Data Source information retrieved successfully.")
+        # # Prompt with user turn only.
+        # user_message =  {"role": "user", "content": "Hello World"}
+        # messages = [user_message]
 
-        # bedrock_runtime_client
-        bedrock_runtime_client = boto3.client(service_name='bedrock-runtime', region_name=os.environ.get('REGION', 'us-east-1'))
-        model_id = 'anthropic.claude-3-sonnet-20240229-v1:0'
-        system_prompt = "Hi Amazon bedrock, how are you?"
-        max_tokens = 1000
+        # body=json.dumps(
+        #     {
+        #         "anthropic_version": "bedrock-2023-05-31",
+        #         "max_tokens": max_tokens,
+        #         "system": system_prompt,
+        #         "messages": messages,
+        #         "temperature": 0.1,
+        #         "top_p": 0.9,
+        #     }
+        # )
 
-        # Prompt with user turn only.
-        user_message =  {"role": "user", "content": "Hello World"}
-        messages = [user_message]
-
-        body=json.dumps(
-            {
-                "anthropic_version": "bedrock-2023-05-31",
-                "max_tokens": max_tokens,
-                "system": system_prompt,
-                "messages": messages,
-                "temperature": 0.1,
-                "top_p": 0.9,
-            }
-        )
-
-        print("invoke_model claude:!!!!!!")
-        response = bedrock_runtime_client.invoke_model(body=body, modelId=model_id)
-        response_body = json.loads(response.get('body').read())
-        print("invoke_model claude successfully:" + str(response_body))
+        # print("invoke_model claude:!!!!!!")
+        # response = bedrock_runtime_client.invoke_model(body=body, modelId=model_id)
+        # response_body = json.loads(response.get('body').read())
+        # print("invoke_model claude successfully:" + str(response_body))
         queryset = Billing.objects.all()
         serializer = BillingSerializer(queryset, many=True)
         return Response(serializer.data)

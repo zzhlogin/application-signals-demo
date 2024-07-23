@@ -70,6 +70,17 @@ public class VisitsServiceClient {
             .bodyToMono(Visits.class);
 
     }
+    
+    // @WithSpan
+    // public Mono<Void> getDiagnoseForOwnersPets(final int ownerId, final int petId) {
+    //     // Span.current().setAttribute(WellKnownAttributes.REMOTE_APPLICATION, "visits-service");
+    //     // Span.current().setAttribute(WellKnownAttributes.REMOTE_OPERATION, "/owners/*/pets/{petId}/visits");
+    //     return webClientBuilder.build()
+    //         .get()
+    //         .uri(hostname + "owners/{ownerId}/pets/{petId}/diagnose", ownerId, petId)
+    //         .retrieve()
+    //         .bodyToMono(Visits.class);
+    // }
 
     @WithSpan
     public Mono<String> addVisitForOwnersPets(final int ownerId, final int petId, final VisitDetails visitDetails) {
